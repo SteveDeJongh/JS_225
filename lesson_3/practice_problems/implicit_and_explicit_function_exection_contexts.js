@@ -62,6 +62,7 @@ outputList.call(fruitsObj, ...fruitsObj.list);
 // It isn't possible to call forEach on arguments since it is only Array-like and not an array. However, since it is Array-like (having indices from 0 to length - 1) we can use it as the context to a slice method call on an empty array. The return value assigned to args is an array holding all of the arguments passed to the outputList function since we are executing slice with no arguments passed to it (recall: the first value passed to call is the execution context).
 
 // Modern JavaScript doesn't use the built-in arguments object. Instead, it uses the new rest syntax that we discuss in our Syntactic Sugar gist:
+/*
 
 let fruitsObj = {
   list: ['Apple', 'Banana', 'Grapefruit', 'Pineapple', 'Orange'],
@@ -75,5 +76,5 @@ function outputList(...args) {
     console.log(elem);
   });
 }
-
+*/
 // invoke outputList here
