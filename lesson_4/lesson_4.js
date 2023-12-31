@@ -172,8 +172,6 @@ list.list();
 
 console.log(list.items); // ['corn'] // `items` array is accessible through itme property.
 
-*/
-
 function makeList() {
   let items = [];
 
@@ -223,3 +221,45 @@ list.list();
 // corn
 
 console.log(list.items); // undefined
+
+*/
+
+// How Closures Affect Garbage Collection
+
+// 1
+
+// [1] can be garbage collected after the function `add` is invoked.
+
+// [2] can be GC'ed after the `run` function returns.
+
+// [1,2] can be GC'ed only after the program ends. 
+
+// 2
+
+// Only when the program ends, or if `helloSteveAndEdie` is reassigned to null.
+
+// Partial Function Application
+
+// 1
+
+function greet(arg1, arg2) {
+  let capitalized = arg1[0].toUpperCase() + arg1.slice(1);
+  console.log(capitalized + ', ' + arg2 + '!');
+}
+
+greet('howdy', 'Joe');
+greet('good morning', 'Sue');
+
+// 2
+
+function partial(primary, arg1) {
+  return function(arg2) {
+    return primary(arg1, arg2);
+  }
+}
+
+let sayHello = partial(greet, 'hello');
+let sayHi = partial(greet, 'hi');
+
+sayHello('Brandon');
+sayHi('Sarah');
