@@ -30,7 +30,6 @@ function Lizard() {
 
 let lizzy = new Lizard(); // added the `new` keyword.
 lizzy.scamper(); // ?
-*/
 
 // Objects and Prototypes
 
@@ -51,3 +50,13 @@ console.log(prot.isPrototypeOf(foo)); // true
 
 prot.isPrototypeOf(foo);
 console.log(Object.prototype.isPrototypeOf(foo)); // true
+
+// Prototypal Inheritance and Behavior Delegation
+
+// 1 logs '1'
+
+// 2 logs '2'
+
+// 3 No. To check that `myProp` is actually a property of `far`, we can call hasOwnProperty('myProp') on `far`, or we can see if myProp is in the list returned by calling Object.getOwnPropertyNames(far).
+
+*/
