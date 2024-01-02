@@ -138,3 +138,7 @@ neptune.wake();  // I am awake
 */
 
 // The Class Syntactic Sugar
+
+// https://launchschool.com/gists/6ba85481
+// https://launchschool.com/gists/cdba6a8e
+
