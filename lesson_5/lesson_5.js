@@ -59,4 +59,82 @@ console.log(Object.prototype.isPrototypeOf(foo)); // true
 
 // 3 No. To check that `myProp` is actually a property of `far`, we can call hasOwnProperty('myProp') on `far`, or we can see if myProp is in the list returned by calling Object.getOwnPropertyNames(far).
 
+//https://www.youtube.com/watch?v=-N9tBvlO9Bo
+
+function UserCreator(name, points) {
+  this.name = name;
+  this.points = points;
+}
+
+UserCreator.prototype.add = function() {
+  this.points += 1;
+}
+
+console.log(UserCreator.prototype); // {add: [Function (anonymous)]}
+console.log(UserCreator.name); // UserCreator (Constructor functions name)
+
+const user = new UserCreator('steve', 1);
+
+console.log(user); // {name = 'steve'...}
+console.log(user.constructor); // Function: UserConstructor
+console.log(user.constructor.prototype) // {add: [Function (anonymous)]}
+
+// Static and Instance Properties and Methods
+
+// The Pseudo-classical PAttern and the OLOO Pattern
+
+// 1
+
+let PetPrototype = {
+  sleep: function() {
+    console.log('I am sleeping');
+  },
+
+  wake: function() {
+    console.log('I am awake');
+  },
+
+  init(animal, name) {
+    this.animal = animal;
+    this.name = name; 
+    return this; 
+  },
+}
+
+let pudding = Object.create(PetPrototype).init("Cat", "Pudding");
+console.log(`I am a ${pudding.animal}. My name is ${pudding.name}.`);
+pudding.sleep(); // I am sleeping
+pudding.wake();  // I am awake
+
+let neptune = Object.create(PetPrototype).init("Fish", "Neptune");
+console.log(`I am a ${neptune.animal}. My name is ${neptune.name}.`);
+neptune.sleep(); // I am sleeping
+neptune.wake();  // I am awake
+
+// 2
+
+function Pet(animal, name) {
+  this.animal = animal;
+  this.name = name;
+}
+
+Pet.prototype.sleep = function() {
+  console.log('I am sleeping');
+}
+
+Pet.prototype.wake = function() {
+  console.log('I am awake');
+}
+
+let pudding = new Pet('Cat', 'Pudding');
+console.log(`I am a ${pudding.animal}. My name is ${pudding.name}.`);
+pudding.sleep(); // I am sleeping
+pudding.wake();  // I am awake
+
+let neptune = new Pet('Fish', 'Neptune');
+console.log(`I am a ${neptune.animal}. My name is ${neptune.name}.`);
+neptune.sleep(); // I am sleeping
+neptune.wake();  // I am awake
 */
+
+// The Class Syntactic Sugar
