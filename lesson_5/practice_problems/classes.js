@@ -146,7 +146,6 @@ let butterscotch = new Cat('Butterscotch', 10, 'tan and white');
 
 console.log(pudding.info());
 console.log(butterscotch.info());
-*/
 
 // 9
 
@@ -191,3 +190,180 @@ console.log(cat.introduce() === "Hello, my name is Pepe and I am 2 years old and
 let dog = new Dog('Gryff', 3, 'happy', 'Steve');
 console.log(dog.greetMaster());
 console.log(dog.introduce());
+
+// 10
+
+class Vehicle {
+  constructor(make, model, wheels) {
+    this.make = make;
+    this.model = model;
+    this.wheels = wheels;
+  }
+
+  info() {
+    return `${this.make} ${this.model}`;
+  }
+
+  getWheel() {
+    return this.wheels;
+  }
+}
+
+class Car extends Vehicle {
+  constructor(make, model) {
+    super(make, model, 4);
+  }
+}
+
+class Motorcycle extends Vehicle {
+  constructor(make, model) {
+    super(make, model, 2);
+  }
+}
+
+class Truck extends Vehicle{
+  constructor(make, model, payload) {
+    super(make, model, 6);
+    this.payload = payload;
+  }
+}
+
+// 11
+
+class Something {
+  constructor() {
+    this.data = "Hello";
+  }
+
+  dupData() {
+    return this.data + this.data;
+  }
+
+  static dupData() {
+    return "ByeBye";
+  }
+}
+
+let thing = new Something();
+console.log(Something.dupData()); // 'ByeBye'
+console.log(thing.dupData()); // 'HelloHello'
+
+// 12
+
+// function Person() {}
+// Person.prototype.greeting = function(text) {
+//   console.log(text);
+// }
+
+// function Shouter() {
+//   Person.call(this);
+// }
+
+// Shouter.prototype = Object.create(Person.prototype)
+// Shouter.prototype.greeting = function(text) {
+//   Person.prototype.greeting.call(this, text.toUpperCase());
+// }
+
+class Person{
+  greeting(text) {
+    console.log(text);
+  }
+}
+
+class Shouter extends Person{
+  greeting(text){
+    super.greeting(text.toUpperCase());
+  }
+}
+
+let person = new Person();
+let shouter = new Shouter();
+
+person.greeting("Hello. It's very nice to meet you."); // Hello. It's very nice to meet you
+shouter.greeting("Hello my friend."); // HELLO MY FRIEND.
+
+*/
+
+// 13
+
+class Pet{
+  constructor(animal, name) {
+    this.animal = animal;
+    this.name = name;
+  }
+
+  info() {
+    return `a ${this.animal} named ${this.name}`;
+  }
+}
+
+class Owner{
+  constructor(name) {
+    this.name = name;
+    this.pets = [];
+  }
+
+  numberOfPets(){
+    return this.pets.length;
+  }
+
+  adopt(pet) {
+    this.pets.push(pet);
+  }
+
+  printPets() {
+    this.pets.forEach(pet => console.log(pet.info()));
+  }
+}
+
+class Shelter{
+  constructor(){
+    this.owners = {};
+  }
+
+  adopt(owner, pet) {
+    owner.adopt(pet);
+    if (!this.owners[owner.name]) {
+      this.owners[owner.name] = owner;
+    }
+  }
+
+  printAdoptions(){
+    // Object.keys(this.adoptions).forEach(owner => {
+    //   console.log(`${owner} has adopted the following pets:`)
+    //   this.adoptions[owner].forEach(pet => {
+    //     console.log(pet.info());
+    //   });
+    //   console.log('')
+    // })
+
+    for (let name in this.owners) {
+      console.log(`${name} has adopted the following pets:`);
+      this.owners[name].printPets();
+      console.log('');
+    }
+  }
+}
+
+let butterscotch = new Pet('cat', 'Butterscotch');
+let pudding      = new Pet('cat', 'Pudding');
+let darwin       = new Pet('bearded dragon', 'Darwin');
+let kennedy      = new Pet('dog', 'Kennedy');
+let sweetie      = new Pet('parakeet', 'Sweetie Pie');
+let molly        = new Pet('dog', 'Molly');
+let chester      = new Pet('fish', 'Chester');
+
+let phanson = new Owner('P Hanson');
+let bholmes = new Owner('B Holmes');
+
+let shelter = new Shelter();
+shelter.adopt(phanson, butterscotch);
+shelter.adopt(phanson, pudding);
+shelter.adopt(phanson, darwin);
+shelter.adopt(bholmes, kennedy);
+shelter.adopt(bholmes, sweetie);
+shelter.adopt(bholmes, molly);
+shelter.adopt(bholmes, chester);
+shelter.printAdoptions();
+console.log(`${phanson.name} has ${phanson.numberOfPets()} adopted pets.`);
+console.log(`${bholmes.name} has ${bholmes.numberOfPets()} adopted pets.`);
