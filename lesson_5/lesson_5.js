@@ -135,10 +135,54 @@ let neptune = new Pet('Fish', 'Neptune');
 console.log(`I am a ${neptune.animal}. My name is ${neptune.name}.`);
 neptune.sleep(); // I am sleeping
 neptune.wake();  // I am awake
-*/
 
 // The Class Syntactic Sugar
 
 // https://launchschool.com/gists/6ba85481
 // https://launchschool.com/gists/cdba6a8e
 
+// More Methods on the Object Constructor
+
+function newPerson(name) {
+  let obj = {
+    name: name,
+  };
+
+  Object.defineProperties(obj, {
+    log: {
+      value: function() {
+      console.log(this.name);
+      },
+      writable: false,
+    },
+  });
+
+  return obj;
+}
+
+// More concise
+function newPerson(name) {
+  return Object.defineProperties({ name: name }, {
+    log: {
+      value() {
+        console.log(this.name);
+      },
+      writable: false
+    },
+  });
+}
+
+let me = newPerson('Shane Riley');
+me.log();     // => Shane Riley
+me.log = function() { console.log('Amanda Rose'); };
+me.log();     // => Shane Riley
+
+// Object.freeze
+
+// The arrays and objects within the `frozen` object are not immutable as Object.freeze only freezes the reference to the object, and not the object itself.
+*/
+
+let obj = {};
+let obj2 = Object.create(obj);
+
+console.log(Object.getPrototypeOf(obj2) === obj); // true
