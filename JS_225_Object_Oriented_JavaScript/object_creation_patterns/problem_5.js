@@ -14,14 +14,14 @@ const ItemCreator = (function() {
     return first3 + first2;
   }
 
-  return function(itemName, category, q) {
+  return function(itemName, category, q) { // constructor function with access to private methods.
     if (isValidInfo(itemName, category, q)) {
       this.sku = makeSku(itemName, category);
       this.name = itemName;
       this.category = category;
       this.q = q;
     } else {
-      return {notValid: true};    
+      return {notValid: true};    // explicit return value when not valid.
     }
   }
 })();
@@ -82,7 +82,7 @@ let ReportManager = {
   },
 
   createReporter(sku) {
-    let info = this.items.items.filter(item => item.sku === sku)[0];
+    let info = this.items.items.filter(item => item.sku === sku)[0]; // Maintaining reference to an object via closure.
     return {
       itemInfo() {
         Object.keys(info).forEach(key => {

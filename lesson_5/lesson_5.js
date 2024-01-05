@@ -182,7 +182,49 @@ me.log();     // => Shane Riley
 // The arrays and objects within the `frozen` object are not immutable as Object.freeze only freezes the reference to the object, and not the object itself.
 */
 
-let obj = {};
-let obj2 = Object.create(obj);
+// let obj = {};
+// let obj2 = Object.create(obj);
 
-console.log(Object.getPrototypeOf(obj2) === obj); // true
+// console.log(Object.getPrototypeOf(obj2) === obj); // true
+
+// 
+// function Dog() { // Constructor function
+//     this.name = 'Gryff';
+// }
+
+// let pup = new Dog();
+
+// console.log(pup); // Dog { name: 'Gryff' }
+// console.log(Dog.prototype.constructor); // [Function: Dog]
+// console.log(pup.__proto__); // {}
+// console.log(pup.__proto__.constructor) // [Function: Dog]
+// console.log(pup.prototype); // undefined
+// console.log(Dog.prototype.constructor);
+// console.log(Dog.__proto__.constructor);
+
+// Overcoming Context Loss
+
+let obj = {
+	numbers: [1,2,3],
+	showNums() {
+		let counters = [1,2,3];
+		counters.forEach(function(_) {
+      console.log(this); // `this` references the global object.
+		}
+	)},
+};
+
+obj.showNums();
+
+let obj2 = {
+	numbers: [1,2,3],
+	showNums() {
+		let counters = [1,2,3];
+		let that = this;
+		counters.forEach(function(_) {
+      console.log(that); // `that` references the `obj2` object.
+		}
+	)},
+};
+
+obj2.showNums();
