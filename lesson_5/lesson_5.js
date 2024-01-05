@@ -227,4 +227,4 @@ let obj2 = {
 	)},
 };
 
-obj2.showNums();
+obj2.showNums()
