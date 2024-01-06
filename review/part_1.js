@@ -145,7 +145,8 @@ secretHolder(); // I can access 100!
 // We should use closures to make data Private as it forces other developers to use the intended interface, rather than manipulating the data itself directly.
 
 // 19. What is garbage collection? Which values in JS participate in GC? Why do we need to be aware of garbage collection, as software engineers?
-// JS GC applies to all variables.
+// Garbage collection is the process JS employs to autmatically free up memmory taken up by values that are no longer needed.
+// JS GC applies to all values.
 // It's important to remain aware of GC and how it works as we need to be cognizant of what will and wont be collected to avoid unnecessary memory usage.
 
 // JS GC will remove from memory any variable that has a references count of 0.

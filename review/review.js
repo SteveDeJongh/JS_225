@@ -160,3 +160,29 @@ bike.clearParts = function() {
 bike.clearParts();
 console.log(global.parts); // [];
 bike.getParts();
+
+// GC and Closures
+
+function makeHi(name) {
+	return function() {
+		console.log('Hi ' + name);
+	}
+}
+
+let hi = makeHi('steve');
+hi(); // 'Hi steve'
+
+// Partial function application
+
+function talkTwo(string1, string2) {
+	console.log(string1, string2);
+}
+
+function generator(func, arg1) {
+  return function(arg2) {
+		return func(arg1, arg2)
+	};
+}
+
+let makeABoo = generator(talkTwo, 'Boo');
+makeABoo('who'); // logs 'Boo Who'
