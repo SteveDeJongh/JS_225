@@ -28,6 +28,7 @@ let obj2 = {
 obj2.showNums()
 
 */
+/*
 
 // Object Creation Patterns
 
@@ -186,3 +187,50 @@ function generator(func, arg1) {
 
 let makeABoo = generator(talkTwo, 'Boo');
 makeABoo('who'); // logs 'Boo Who'
+
+*/
+
+// Object prototype chaining
+
+function Animal() {
+  this.type = 'mamal';
+
+  // this.breath = function() {
+  //   console.log('breathing!');
+  // };
+}
+
+let animal = new Animal(); 
+
+// lets instead assign teh `breath` function to the `Animal.prototype`
+
+Animal.prototype.breath = function() {
+  console.log("I'm breathing");
+}
+
+console.log('Animal object:', animal); // Animal { type: 'mamal' }
+// Now, each new animal won't have a separate `breath` method but will still have access to it.
+animal.breath(); // 'I'm breathing!'
+
+function Dog() {
+  this.animal = 'dog'
+}
+Dog.prototype = new Animal(); // object created by `Dog` will now also have a `type` property.
+
+function Terrior() {
+
+}
+Terrior.prototype = Object.create(Dog.prototype); // `type` property is not carried, only the behaviors from `Animal.prototype` are delagated.
+
+Dog.prototype.constructor = Dog; // resetting the constructor property for Dog objects.
+let dog = new Dog();
+
+console.log('Prototype object of `dog`:', Object.getPrototypeOf(dog)); // Animal { type: 'mamal', constructor: [Function: Dog] }
+console.log('Dog constructor:', dog.constructor); // [Function: Dog]
+console.log('dog object:', dog); // Dog { animal: 'dog' }
+
+Terrior.prototype.constructor = Terrior;
+let terrior = new Terrior();
+console.log('Prototype of terrior:', Object.getPrototypeOf(terrior)); // {constructor: [Function: Terrior]}
+console.log('Construcotr of terrior:', terrior.constructor); // [Function: Terrior]
+console.log('terrior:', terrior); // Terrior {}
