@@ -124,3 +124,39 @@ let ProtoObj = { // shared behavior goes in the prototype object. // Capitalized
 let obj5 = Object.create(ProtoObj).init('obj5', 'OLOO');
 obj5.sayWhatIAm(); // I'm created by a OLOO pattern.
 console.log(obj5); // { name: 'obj5', type: 'OLOO' } // behavior is not in the new object itself, but found in it's prototype. 
+
+// Closures
+
+function makeBike(b) { // returns an object whose methods maintain access to `parts` and `brand` via closure.
+  let parts = [];
+  let brand = b;
+
+  return {
+    getBrand() {
+      console.log(brand);
+    },
+
+    getParts() {
+      console.log(parts);
+    },
+
+    addPart(p) {
+      parts.push(p);
+    },
+  };
+}
+
+let bike = makeBike('kona');
+console.log(bike.brand); // undefined
+bike.getBrand(); // 'kona'
+bike.addPart('frame');
+bike.getParts(); // ['frame']
+
+bike.clearParts = function() {
+  // console.log(parts); // parts is not defined.
+	parts = []; // changes the global property `parts` to an empty array.
+}
+
+bike.clearParts();
+console.log(global.parts); // [];
+bike.getParts();

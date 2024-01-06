@@ -30,19 +30,126 @@ objectah.sayHello(); // Hello!
 // Of note however, is that `this` when used in the global scope still points to the global object.
 
 // 6. What are the benefits to using strict mode? When should you use it?
+// Strict mode allows us to avoid accidentally making changes to the global object.
+
 // 7. What is implicit function execution context?
+// The implicit function execution context is the execution context for any method invoked without an explciit context provided. JS will implicitly bind methods invoked in this manner to the calling object.
+
 // 8. What is explicit function execution context?
+// Explicit execution context is when we use `call` or `apply` to explicitely execute a function with a particular object as it's context.
+
 // 9. How can we change a function's execution context at execution time?
+// We can change a function execution context by using the `call` or `apply` functions to set it explicitly.
+
 // 10. What do `call()` and `apply()` do, and how are they different? Give an example of using each.
+// call and apply both set the method executions context explicitly, however call expects a list of arguments, while apply expects them in an array.
+
+let obj = {
+  one: 'one',
+  two: 'two',
+  sayOneTwoThree(var1, var2) {
+    console.log(this.one + ' ' + var1 + ' ' + var2);
+  }
+}
+
+let otherObj = {
+  one: 'eleven',
+}
+
+obj.sayOneTwoThree('two', 'three'); // one two three
+obj.sayOneTwoThree.call(otherObj, 'two', 'three'); // eleven two three
+obj.sayOneTwoThree.apply(otherObj, ['two', 'three']); // eleven two three
+
 // 11. What is the global object, and how can we access it?
+// The global object is the object which serves as the implicit execution context. Is created when JS starts running. `window` in the browser, and `global` in node.
+
 // 12. What is the `bind()` method, and how does it differ from `call()` an `apply()`?
+// `bind` returns a new function which has it's execution context permanently set to the passed in object.
+
 // 13. Bind pp
 // 14. What do we mean when we say a function can "lose it's context"? What are two ways a function can experience context loss? 
+
+let objLoss = {
+	someproperty: 'hello',
+	someMethod() {
+		console.log(this.someproperty);
+	},
+}
+
+objLoss.someMethod(); // 'hello'
+let outside = objLoss.someMethod; // assigns the method `someMethod` to `outside`.
+outside(); // method invoked; 'undefined'
+
+let objLoss2 = {
+  a: '1',
+  woo() {
+    function nah() {
+      console.log(this); // `global`
+      console.log(this.a);
+    }
+
+    nah(); // calling object is `global` which does not have an `a` property defined.
+  },
+};
+
+objLoss2.woo(); // undefined
+
+let objLoss3 = {
+  a: '3',
+  woo() {
+    function nah() {
+      console.log(this); // `objLoss3`
+      console.log(this.a);
+    }
+
+    nah.call(this); // calling object is `objLoss3` which does an `a` property defined.
+  },
+};
+
+objLoss3.woo(); // 3
+
+let objLoss4 = {
+  a: '4',
+  woo() {
+		let self = this;
+    function nah() {
+      console.log(self); // `objLoss3`
+      console.log(self.a); // references self.
+    }
+
+    nah(); // calling object is `global` which doesn't have an `a` property defined, but the code now references `self`.
+  },
+};
+
+objLoss4.woo(); // 4
+
 // 15. Context loss pp
 // 16. Context loss pp
 // 17. What is a closure? What are the benefits of closures, and how can we create one?
+// A closure is the maintained references to variables used within a function and in scope to a function at the time the function is defined.
+
 // 18. How can we use closures to create private data? Demonstrate how we can make a variable, `secretNumber` private, using a closure. Why should we use closures to make data private?
+// We can use closure to create private data by defining the data within a function, and returning a new function that can reference it.
+
+function secretMaker() {
+  let secretNumber = 100;
+
+  return function() {
+    console.log(`I can access ${secretNumber}!`);
+  };
+}
+
+let secretHolder = secretMaker();
+secretHolder(); // I can access 100!
+
+// We should use closures to make data Private as it forces other developers to use the intended interface, rather than manipulating the data itself directly.
+
 // 19. What is garbage collection? Which values in JS participate in GC? Why do we need to be aware of garbage collection, as software engineers?
+// JS GC applies to all variables.
+// It's important to remain aware of GC and how it works as we need to be cognizant of what will and wont be collected to avoid unnecessary memory usage.
+
+// JS GC will remove from memory any variable that has a references count of 0.
+
 // 20. In the following code, how can we retain access to the value `"Steve"`? When can JS garbage collect `"Steve"`? 
 
 // ```jsx
