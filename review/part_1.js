@@ -193,12 +193,41 @@ secretHolder(); // I can access 100!
 //     - Theoretically, this will prevent garbage collection on both strings. However, since `name` isn't referenced within the `helloSteve` function, depending on the browser, `"Steve"` might or might not be garbage collected.
 
 // 21. What is an IIFE? Give an example. Why would we use an IIFE in code?
+// IIFE's are immediately invoked function expressions. They are useful for creating a private scope and creating private data.
 
-// 22. How can you call an IIFE with an argument? 
+(function() {
+  console.log(1);
+})(); // 1
+
+// 22. How can you call an IIFE with an argument?
+// Arguments can be passed in just as any other function
+(function(x) {
+  console.log(x);
+})(2); // 2
 
 // 23. How can you use an IIFE to create a private scope? What problems does this solve?
 
+// We can use an IIFE to create a private scope thanks to closure.
+
+(function() {
+  // everything here is a private scope.
+  let names = [];
+
+  console.log(names);
+})(); // []
+
+// console.log(names); // error names is not defined.
+
 // 24. What is a first-class function? Give an example.
+
+// First class functions are functions that are treated as variables. 
+
+function bar() {
+  console.log('bar');
+}
+
+let foo = bar;
+foo(); // 'bar'
 
 // 25. What concept(s) does the following code demonstrate? How does this work?
 
@@ -214,13 +243,36 @@ secretHolder(); // I can access 100!
 // }
 // ```
 
+// This demoonstrate partial function application.
+
 // 26. What is partial function application, and what are the benefits of using it?
+
+// Partial function application is when we return a new function from a function call, that then calls a 3rd function with some of it's parameters pre-supplied when the new function is created by the outer function.
 
 // 27. Create a reusable function using partial function application.
 
+function addx(x) { // Re usable function
+  return function(n) {
+    return x + n;
+  }
+}
+
+let add5 = addx(5);
+let add2 = addx(2);
+
+console.log(add5(5)); // 10
+console.log(add2(5)); // 7
+
 // 28. What is the difference between a constructor function and a regular function?
 
+// A Constructor function is meant to be called with teh `new` keyword. Convention says that they should start with a capital letter, but this is not required.
+
+// When we call a constructor with `new`, a new object is created within the function, and `this` is set to reference that new object. The newly created object will inherit from the constructor functions prototype.
+// the new object represented by `this` is returned, unless another objet is explicitely returned.
+
 // 29. What does the `new` operator do?
+
+// the `new` operator provides `this` in the function context a new object, sets it's prototype to the functions prototype, executes the function body with the new object as `this`, and returns it.
 
 // 30. What does the following code log to the console? Note: Remember we're running it in coderpad.
 

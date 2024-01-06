@@ -188,8 +188,6 @@ function generator(func, arg1) {
 let makeABoo = generator(talkTwo, 'Boo');
 makeABoo('who'); // logs 'Boo Who'
 
-*/
-
 // Object prototype chaining
 
 function Animal() {
@@ -202,7 +200,7 @@ function Animal() {
 
 let animal = new Animal(); 
 
-// lets instead assign teh `breath` function to the `Animal.prototype`
+// lets instead assign the `breath` function to the `Animal.prototype`
 
 Animal.prototype.breath = function() {
   console.log("I'm breathing");
@@ -234,3 +232,43 @@ let terrior = new Terrior();
 console.log('Prototype of terrior:', Object.getPrototypeOf(terrior)); // {constructor: [Function: Terrior]}
 console.log('Construcotr of terrior:', terrior.constructor); // [Function: Terrior]
 console.log('terrior:', terrior); // Terrior {}
+
+*/
+
+// Class Syntax
+
+class Vehicle {
+	constructor(wheels) {
+		this.wheels = wheels;
+	}
+
+	howManyWheels() {
+		console.log(this.wheels);
+	}
+
+	static getDescription() {
+		console.log(`A vehicle has a number of wheels and rolls`);
+	}
+	
+	static descriptionProperty = 'A vehicle description property';
+}
+
+let vehicle = new Vehicle(4); // instantiating a new object using the `new` keyword.
+vehicle.howManyWheels(); // logs '4'
+Vehicle.getDescription(); // `A vehicle has a number of wheels and rolls` // Calling a static method on the class itself.
+console.log(Vehicle.descriptionProperty); // 'A vehicle description property';
+
+class Car extends Vehicle {
+	constructor(wheel, type) {
+		super(wheel);
+		this.type = type;
+	}
+
+  whatType() {
+    console.log('This car is a ' + this.type + ' and has a wheel count of: ' + this.wheels + '.')
+  }
+}
+
+let car = new Car(4, 'coupe');
+car.howManyWheels(); // 4
+car.whatType(); // This car is a coupe and has a wheel count of: 4.
