@@ -233,8 +233,6 @@ console.log('Prototype of terrior:', Object.getPrototypeOf(terrior)); // {constr
 console.log('Construcotr of terrior:', terrior.constructor); // [Function: Terrior]
 console.log('terrior:', terrior); // Terrior {}
 
-*/
-
 // Class Syntax
 
 class Vehicle {
@@ -272,3 +270,68 @@ class Car extends Vehicle {
 let car = new Car(4, 'coupe');
 car.howManyWheels(); // 4
 car.whatType(); // This car is a coupe and has a wheel count of: 4.
+
+*/
+
+let objLoss2 = {
+  a: '2',
+  woo() {
+    function nah() {
+      console.log(this.a); // global.a
+    }
+
+    nah(); // calling object is `global` which does not have an `a` property defined.
+  },
+};
+
+objLoss2.woo(); // undefined
+
+// Fixes:
+// Using call();
+
+let objLoss3 = {
+  a: '3',
+  woo() {
+    function nah() {
+      console.log(this.a);
+    }
+
+    nah.call(this); // calling object is `objLoss3` which does an `a` property defined.
+  },
+};
+
+objLoss3.woo(); // 3
+
+// Using a in-scope `self` variable.
+
+let objLoss4 = {
+  a: '4',
+  woo() {
+		let self = this;
+    function nah() {
+      console.log(self.a); // references self.
+    }
+
+    nah(); // calling object is `global` which doesn't have an `a` property defined, but the code now references `self`.
+  },
+};
+
+objLoss3.woo(); // 4
+
+// 
+
+function sayNumber() {
+	let number = { // number holds a reference to the object that contains `val`. Let's call this `RefA`.
+		val: 0,
+	};
+	console.log(number.val);
+	return number; // We return the `RefA` from the function.
+}
+
+let returnedNumber = sayNumber(); // The return value, number, which holds`RefA` is assigned to `returnedNumber`. `returnedNumber` now also holds `RefA`.
+
+// Once this code is run, we now have two variables that point to the same object reference, but only 1 of teh variables remain accessible.
+
+// Does this mean that the variable `number` within the `sayNumber` function and it's copy of the object reference are eligible for GC?
+
+// I understand that the object referenced by `number` is not eligible, as it's a same object now referenced by `returnedNumber`, but I'm curious about the storage of the reference to the object in the function.
