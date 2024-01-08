@@ -271,8 +271,6 @@ let car = new Car(4, 'coupe');
 car.howManyWheels(); // 4
 car.whatType(); // This car is a coupe and has a wheel count of: 4.
 
-*/
-
 let objLoss2 = {
   a: '2',
   woo() {
@@ -335,3 +333,41 @@ let returnedNumber = sayNumber(); // The return value, number, which holds`RefA`
 // Does this mean that the variable `number` within the `sayNumber` function and it's copy of the object reference are eligible for GC?
 
 // I understand that the object referenced by `number` is not eligible, as it's a same object now referenced by `returnedNumber`, but I'm curious about the storage of the reference to the object in the function.
+
+*/
+
+let obj1 = {
+  step: 'hello',
+};
+
+let obj2 = Object.create(obj1);
+
+console.log(Object.getPrototypeOf(obj2)); // Point to the same object.
+console.log(obj2.__proto__); // Point to the same object.
+
+// Behvaior Delegation
+
+let sharedBehaviors = { // the object we place the shared behavior on.
+	speak() {
+		console.log('Speaking!');
+	},
+
+	walk() {
+		console.log('Walking!');
+	},
+}
+
+let person = Object.create(sharedBehaviors);  // setting the new objects prototype to `sharedBehaviors`
+let child = Object.create(sharedBehaviors);
+
+person.walk(); // Walking! // the `person` object will not find a walk method within itself, and `delegates` to their prototype object.
+child.walk(); // Walking!
+
+person.speak(); // Speaking!
+child.speak();  // Speaking!
+
+child.speak = function() { // overriding the default behavior by setting a new `speak` function on the object itself.
+	console.log('Now yelling!');
+}
+
+child.speak(); // Now yelling! // finds a `speak` method in the `child` object itself.
