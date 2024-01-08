@@ -334,8 +334,6 @@ let returnedNumber = sayNumber(); // The return value, number, which holds`RefA`
 
 // I understand that the object referenced by `number` is not eligible, as it's a same object now referenced by `returnedNumber`, but I'm curious about the storage of the reference to the object in the function.
 
-*/
-
 let obj1 = {
   step: 'hello',
 };
@@ -371,3 +369,28 @@ child.speak = function() { // overriding the default behavior by setting a new `
 }
 
 child.speak(); // Now yelling! // finds a `speak` method in the `child` object itself.
+
+*/
+
+let ProtoObj = { // shared behavior goes in the prototype object. // Capitalized name for the prototype as convention.
+  sayWhatIAm() {
+    console.log("I'm created by a OLOO pattern.");
+  },
+}
+
+let obj5 = Object.create(ProtoObj);
+
+console.log(obj5.constructor); // [Function: Object]
+
+function PseudoClassical(parameter1, parameter2) { // constructor function.
+  this.name = parameter1;
+  this.type = parameter2;
+}
+
+PseudoClassical.prototype.sayWhatIAm = function() { // Shared `PseudoClassical` object behaviors added to constructors prototype property. 
+  console.log("I'm created by a pseudo-classical function.");
+}
+
+let obj4 = new PseudoClassical('obj4', 'Pseudo-classical');
+
+console.log(obj4.constructor); // Function: PseudoClassical

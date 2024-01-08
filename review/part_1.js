@@ -265,7 +265,7 @@ console.log(add2(5)); // 7
 
 // 28. What is the difference between a constructor function and a regular function?
 
-// A Constructor function is meant to be called with teh `new` keyword. Convention says that they should start with a capital letter, but this is not required.
+// A Constructor function is meant to be called with the `new` keyword. Convention says that they should start with a capital letter, but this is not required.
 
 // When we call a constructor with `new`, a new object is created within the function, and `this` is set to reference that new object. The newly created object will inherit from the constructor functions prototype.
 // the new object represented by `this` is returned, unless another objet is explicitely returned.
@@ -336,6 +336,11 @@ console.log(add2(5)); // 7
 // // Add a swing method to the Ninja prototype which
 // // returns the calling object and modifies swung
 
+// Ninja.prototype.swing = function () {
+//   this.swung = true;
+//   return this;
+// }
+
 // console.log(ninjaA.swing().swung);      // must log true
 // console.log(ninjaB.swing().swung);      // must log true
 // ```
@@ -364,24 +369,62 @@ console.log(add2(5)); // 7
 
 // 33. What does `Object.create` do, and how is it used?
 
+// `Object.create`, creates a new object. If we pass in an optional argument of another object, that opject will be set as the new objects.prototype object.
+
 // 34. What is the `function.prototype`? 
+
+// Function.prototype returns the functions prototype object. This is the object is used by the function if it is used as a constructor, and is what the function will set the newly created objects prototype object to the object referenced by this Function property.
 
 // 35. What is behavior delegation? How does JS implement inheritance differently than Ruby?
 
+// Behavior delegation is how we can delegate the execution of methods or retreival of property values up the prototype chain. This is done by first checking the object itself for the requested property or method, and if it is not found, then continuing to search for it in teh current objects `prototype` object. It's this link or chain of objects that enables us to emmulate a class structure. Shared behaviors of all child objects can go in a parent object and be used.
+
 // 36. What is OLOO? Give an example. What are the benefits to organizing your code this way?
 
+// The OLOO style of object creation is embraces JavaScripts prototype object link model and creates new objects with a link to a "parent" object, setting the new objects prototype to this `template` object creation time. We do this by calling `ojbect.create(templateObj)` passing in the template object as an argument. We can option define a `init` method on this templateObj to set properties on the object itself.
+
 // 37. What is the Pseudo-Classical Pattern? Give an example. What are the benefits to organizing your code this way?
+
+// The Pseudo classical approach uses a constructor function, and places all shared behavior on that functions prototype object that is inherited by each new object. This also allows us to use the constructor property to view how the object was made.
 
 // 38. What are some things we need to consider when designing our code? 
 
 // 39. What's the difference between using OLOO/ the Pseudo-Classical Pattern and using factory functions? 
 
+// The main difference between using the OLOO and Pseudo-Classical patterns vs factory functions is that there is only 1 copy of the shared behavior methods.
+
 // 40. How does ES6 `class` syntax work? Give an example.
 
+// ES6 introduces the class syntax, which enables us to define a class with shared behavior, and a constructor method to instantiate objects and set intiial properties.
+
+class Vehicle {
+  constructor(type, wheels) {
+    this.type = type;
+    this.wheels = wheels;
+  }
+
+  define() {
+    console.log(this.type + ' ' + this.wheels);
+  }
+}
+
+let car = new Vehicle('car', 4);
+car.define(); // car 4
+
 // 41. How does inheritance work with `class` syntax?
+
+// With ES6 class syntax, we can have a class inherit from a parent class by `extending` the class.
+
+class Car extends Vehicle {
+
+} // The `Car` class will inherit from `Vehicle`.
 
 // 42. Write a constructor function. 
 
 // 43. What is the prototype chain?
 
+// The prototype chain is the chain of objects linked in their hidden [[prototype]] property. This is where behavior delegation continues searching for a property or method if not found in the initial object. The final Object in the prototype chain is Object.prototype. Calling Object.getPrototypeOf(Object.prototype)); returns null.
+
 // 44. What is the `.constructor` property?
+
+// The constructor property is set on an objects prototype object, and is set to point to the function that created the object. This property is able to be reset, so caution must be used.
