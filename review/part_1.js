@@ -17,10 +17,10 @@ let objectah = newObj('steve', 'human');
 objectah.sayHello(); // Hello!
 
 // 2. What are some of the disadvantages of an object factory?
-// Factory functons have two main disadvantages. 1) there no way to tell what function created the object. 2) Each object produced from the factory function will have their own copy of each method.
+// Factory functions have two main disadvantages. 1) there is no way to tell if the object was created by a factoy function. 2) Each object produced from the factory function will have their own copy of each method.
 
 // 3. What is `this`?
-// `this` refers to the calling object/execution context. The object reference by `this` in a function definition depends on how and where the function or method was called.
+// `this` refers to the calling object in the function or method, the execution context. The object reference by `this` in a function definition depends on how and where the function or method was invoked, and not how it was defined.
 
 // 4. What is execution context?
 // Execution context refers to the object that `this` represents during function execution. It is set when the function is invoked, and not how the function is defined.
@@ -33,10 +33,10 @@ objectah.sayHello(); // Hello!
 // Strict mode allows us to avoid accidentally making changes to the global object.
 
 // 7. What is implicit function execution context?
-// The implicit function execution context is the execution context for any method invoked without an explciit context provided. JS will implicitly bind methods invoked in this manner to the calling object.
+// The implicit function execution context is the execution context for any method invoked without an explicit context provided (say by using `call` or `apply`). JS will implicitly bind methods invoked in this manner to the calling object.
 
 // 8. What is explicit function execution context?
-// Explicit execution context is when we use `call` or `apply` to explicitely execute a function with a particular object as it's context.
+// Explicit execution context is when we use `call` or `apply` to explicitely execute a function with a particular object as it's context. We set the execution context by passing it in as an argument.
 
 // 9. How can we change a function's execution context at execution time?
 // We can change a function execution context by using the `call` or `apply` functions to set it explicitly.
@@ -220,7 +220,7 @@ secretHolder(); // I can access 100!
 
 // 24. What is a first-class function? Give an example.
 
-// First class functions are functions that are treated as variables. 
+// First class functions are functions that are treated as variables and can be passed around as such. In the example below, we pass around the function assigned to bar, and assign it to `foo` as well.
 
 function bar() {
   console.log('bar');
@@ -243,17 +243,21 @@ foo(); // 'bar'
 // }
 // ```
 
-// This demoonstrate partial function application.
+// This demoonstrate partial function application. Partial function application works by using closures. We do this by defining a function, that returns a new function, that calls a 3rd function with some of it's arguments already pre-supplied by the outer function. This reference to the pre-filled argument value provided by the outside function is maintained thanks to closure, resulting in the return function be able to call the 3rd function while providing atleast 1 fewer arguments.
 
 // 26. What is partial function application, and what are the benefits of using it?
 
-// Partial function application is when we return a new function from a function call, that then calls a 3rd function with some of it's parameters pre-supplied when the new function is created by the outer function.
+// Partial function application is when we return a new function from a function call, that then calls a 3rd function with some of it's arguments pre-supplied when the new function is created by the outer function.
 
 // 27. Create a reusable function using partial function application.
 
+function add(x, y) {
+  return x + y;
+}
+
 function addx(x) { // Re usable function
   return function(n) {
-    return x + n;
+    return add(x, n);
   }
 }
 
@@ -369,7 +373,7 @@ console.log(add2(5)); // 7
 
 // 33. What does `Object.create` do, and how is it used?
 
-// `Object.create`, creates a new object. If we pass in an optional argument of another object, that opject will be set as the new objects.prototype object.
+// `Object.create`, creates a new object and sets that new objects prototype to the object we pass in.
 
 // 34. What is the `function.prototype`? 
 
@@ -428,3 +432,40 @@ class Car extends Vehicle {
 // 44. What is the `.constructor` property?
 
 // The constructor property is set on an objects prototype object, and is set to point to the function that created the object. This property is able to be reset, so caution must be used.
+
+let tobj = {
+  a: 'tobja',
+  log() {
+    return this.a;
+  },
+}
+
+let tobj2 = {
+  a: 'tobj2',
+  log() {
+    return tobj.log.call(this);
+  },
+  bog() {
+    return this;
+  }
+}
+
+console.log(tobj2.bog()); // { a: 'tobj2', log: [Function: log], bog: [Function: bog] }
+console.log(tobj2.log()); // tobj2
+
+let outsideLog = tobj.log;
+
+console.log(outsideLog()); // undefined.
+console.log(tobj.log()); // 'tobja'
+
+let tobj3 = Object.create(tobj);
+
+tobj3.a = 'tobj3';
+
+console.log(tobj3.log()); // 'tobj3'
+
+let tobj4 = Object.create(tobj2);
+
+tobj4.a = 'tobj4';
+
+console.log(tobj4.log()); // 'tobj4'
