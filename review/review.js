@@ -370,8 +370,6 @@ child.speak = function() { // overriding the default behavior by setting a new `
 
 child.speak(); // Now yelling! // finds a `speak` method in the `child` object itself.
 
-*/
-
 let ProtoObj = { // shared behavior goes in the prototype object. // Capitalized name for the prototype as convention.
   sayWhatIAm() {
     console.log("I'm created by a OLOO pattern.");
@@ -394,3 +392,5 @@ PseudoClassical.prototype.sayWhatIAm = function() { // Shared `PseudoClassical` 
 let obj4 = new PseudoClassical('obj4', 'Pseudo-classical');
 
 console.log(obj4.constructor); // Function: PseudoClassical
+
+*/

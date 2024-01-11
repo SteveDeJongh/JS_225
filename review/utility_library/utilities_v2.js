@@ -1,4 +1,23 @@
 (function() {
+  let findObjs = function(element, matchMe, multiple) {
+    let mkey = Object.keys(matchMe);
+    let match = multiple ? [] : undefined;
+
+    for (let i = 0; i < element.length; i += 1) {
+      let curr = element[i];
+      if (mkey.every(k => matchMe[k] === curr[k])) {
+        if (multiple) {
+          match.push(curr);
+        } else {
+          match = curr;
+          break;
+        }
+      }
+    }
+
+    return match;
+  };
+
   let _ = function(element) {
     let u = {
       first: function() {
@@ -49,41 +68,53 @@
         return sampleArr;
       },
 
+      // findWhere(matchMe) {
+      //   let mkey = Object.keys(matchMe);
+      //   let match = undefined;
+
+      //   for (let i = 0; i < element.length; i += 1) {
+      //     let curr = element[i];
+      //     if (mkey.every(k => matchMe[k] === curr[k])) {
+      //       match = curr;
+      //       break;
+      //     }
+      //   }
+
+      //   return match;
+      // },
+
+      // where(matchMe) {
+      //   let mkey = Object.keys(matchMe);
+      //   let matches = [];
+
+      //   for (let i = 0; i < element.length; i += 1) {
+      //     let curr = element[i];
+      //     if (mkey.every(k => matchMe[k] === curr[k])) {
+      //       matches.push(curr);
+      //     }
+      //   }
+
+      //   return matches;
+      // },
+
+      // Alternate implementation of findWhere and Where using a shared `findObjs` function.
+
       findWhere(matchMe) {
-        let mkey = Object.keys(matchMe);
-        let match = undefined;
-
-        for (let i = 0; i < element.length; i += 1) {
-          let curr = element[i];
-          if (mkey.every(k => matchMe[k] === curr[k])) {
-            match = curr;
-            break;
-          }
-        }
-
-        return match;
+        return findObjs(element, matchMe, false);
       },
 
       where(matchMe) {
-        let mkey = Object.keys(matchMe);
-        let matches = [];
-
-        for (let i = 0; i < element.length; i += 1) {
-          let curr = element[i];
-          if (mkey.every(k => matchMe[k] === curr[k])) {
-            matches.push(curr);
-          }
-        }
-
-        return matches;
+        return findObjs(element, matchMe, true);
       },
 
-      pluck(key) {
+      pluck(query) {
         let values = [];
 
         element.forEach(obj => {
-          if (obj[key] !== undefined) {
-            values.push(obj[key]);
+          let keys = Object.keys(obj);
+          // if (obj[query] !== undefined) {// Could cause an issue if the query is actually assigned to `undefined`.
+          if (keys.includes(query)) {
+            values.push(obj[query]);
           }
         })
 
@@ -103,7 +134,7 @@
         let keys = [].slice.call(arguments, 0);
 
         keys.forEach(k => {
-          if (element[k] !== undefined) {
+          if (k in element) { // instead of: 'element[k] !== undefined'
             newObj[k] = element[k];
           }
         })
@@ -125,38 +156,83 @@
       },
 
       has(prop) {
-        return Object.keys(element).includes(prop);
+        return {}.hasOwnProperty.call(element, prop) // instead of Object.keys(element).includes(prop);
       },
     };
+
+    (['isElement', 'isArray', 'isObject', 'isFunction', 'isString', 'isNumber', 'isBoolean' ]).forEach(method => {
+      u[method] = function() {_[method].call(u, element); };
+    })
 
     return u;
   };
 
   _.range = function(start, stop) {
-      if (stop === undefined) {
-        stop = start;
-        start = 0;
-      }
+    if (stop === undefined) {
+      stop = start;
+      start = 0;
+    }
 
-      let result = [];
-      for (let i = start; i < stop; i += 1) {
-        result.push(i);
-      }
-      return result;
-    };
+    let result = [];
+    for (let i = start; i < stop; i += 1) {
+      result.push(i);
+    }
+    return result;
+  };
 
+  // _.extend = function() {
+  //     let args = [].slice.call(arguments, 0);
+
+  //     for (let i = args.length - 1; i > 0; i -= 1) {
+  //       let curr = args[i];
+
+  //       Object.keys(curr).forEach(key => {
+  //         args[i - 1][key] = curr[key];
+  //       });
+  //     }
+  //     return args[0];
+  //   },;
+
+  // Recursive _.extend()
   _.extend = function() {
-      let args = [].slice.call(arguments, 0);
+    let args = [].slice.call(arguments);
+    let old_obj = args.pop();
+    let new_obj = args[args.length - 1];
 
-      for (let i = args.length - 1; i > 0; i -= 1) {
-        let curr = args[i];
+    for (var prop in old_obj) {
+      new_obj[prop] = old_obj[prop];
+    }
 
-        Object.keys(curr).forEach(key => {
-          args[i - 1][key] = curr[key];
-        });
-      }
-      return args[0];
-    },
+    return args.length === 1 ? new_obj : _.extend.apply(_, args);
+  };
+
+  _.isElement = function(obj) {
+    return obj && obj.nodeType === 1; // checks if `obj` is defined, and if it's type is a element type.
+  };
+
+  _.isArray = Array.isArray || function(arg) {
+    return toString.call(arg) === '[object Array]';
+  };
+
+  _.isObject = function(arg) {
+    return typeof arg === 'object' || typeof arg === 'function' && !!arg;
+  };
+
+  _.isFunction = function(arg) {
+    return typeof arg === 'function';
+  };
+
+  _.isString = function(arg) {
+    return typeof arg === 'string' || arg instanceof String;
+  };
+
+  _.isNumber = function(arg) {
+    return typeof arg === 'number' || arg instanceof Number;
+  }
+  
+  _.isBoolean = function(arg) {
+    return typeof arg === 'boolean' || arg instanceof Boolean;
+  }
 
   window._ = _;
 })();
