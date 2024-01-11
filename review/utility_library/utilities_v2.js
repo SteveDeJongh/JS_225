@@ -15,6 +15,39 @@
           return args.indexOf(x) === -1;
         });
       },
+
+      lastIndexOf(el) {
+        let idx = -1;
+        for (let i = element.length - 1; i >= 0; i -= 1) {
+          if (element[i] === el) {
+            idx = i;
+            break;
+          }
+        }
+
+        return idx;
+      },
+
+      sample(count) {
+        let sampleArr = [],
+            copy = element.slice(),
+            get = function() {
+              let idx = Math.floor(Math.random() * copy.length),
+                  el = copy[idx];
+              
+              copy.splice(idx, 1);
+              return el;
+            };
+        
+        if (!count) return get();
+
+        while(count) {
+          sampleArr.push(get());
+          count -= 1;
+        }
+
+        return sampleArr;
+      }
     };
 
     return u;
