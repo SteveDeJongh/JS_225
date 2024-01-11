@@ -97,6 +97,36 @@
       values() {
         return Object.values(element);
       },
+
+      pick() {
+        let newObj = {};
+        let keys = [].slice.call(arguments, 0);
+
+        keys.forEach(k => {
+          if (element[k] !== undefined) {
+            newObj[k] = element[k];
+          }
+        })
+
+        return newObj;
+      },
+
+      omit() {
+        let newObj = {};
+        let excludeKeys = [].slice.call(arguments, 0);
+
+        Object.keys(element).forEach(k => {
+          if (!excludeKeys.includes(k)) {
+            newObj[k] = element[k];
+          }
+        })
+
+        return newObj;
+      },
+
+      has(prop) {
+        return Object.keys(element).includes(prop);
+      },
     };
 
     return u;
@@ -115,7 +145,7 @@
       return result;
     };
 
-    _.extend = function() {
+  _.extend = function() {
       let args = [].slice.call(arguments, 0);
 
       for (let i = args.length - 1; i > 0; i -= 1) {
