@@ -1,5 +1,7 @@
 // Part 1
 
+/*
+
 // 1. What is an object factory? Give an example of one.
 // An object factory is a function that returns new objects based on a pre-defined template.
 
@@ -399,7 +401,7 @@ console.log(add2(5)); // 7
 
 // 40. How does ES6 `class` syntax work? Give an example.
 
-// ES6 introduces the class syntax, which enables us to define a class with shared behavior, and a constructor method to instantiate objects and set intiial properties.
+// ES6 introduces the class syntax, which enables us to define a class with shared behavior, and a constructor method to instantiate objects and set initial properties.
 
 class Vehicle {
   constructor(type, wheels) {
@@ -469,3 +471,5 @@ let tobj4 = Object.create(tobj2);
 tobj4.a = 'tobj4';
 
 console.log(tobj4.log()); // 'tobj4'
+
+*/
