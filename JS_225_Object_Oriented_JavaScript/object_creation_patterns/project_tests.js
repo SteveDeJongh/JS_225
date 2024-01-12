@@ -24,7 +24,7 @@ function test(message, assertion) {
 //   return typeof _ !== "undefined";
 // });
 
-test("Itemmanager has a create function defined", function() {
+test("ItemManager has a create function defined", function() {
     return typeof ItemManager.create === 'function';
 });
 
@@ -36,6 +36,18 @@ test("Itemmanager has a create function defined", function() {
 
   test("create only adds valid items", function() {
   return ItemManager.items.length === 1 && ItemManager.items[0].sku === 'BASSP';
+  })
+})();
+
+test("IteamCreator's makeSku method is private", function() {
+  return typeof makeSku === 'undefined' && typeof ItemCreator.makeSku === 'undefined';
+});
+
+(function() {
+  ItemManager.create('First', 'Category', 10);
+  ItemManager.create('Se cond', 'Category', 10);
+  test('makeSku handles short first word correctly', function() {
+    return ItemManager.items[1].sku === 'FIRCA' && ItemManager.items[2].sku === 'SECCA';
   })
 })();
 
